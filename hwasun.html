@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>박화선 — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0f;
+      --bg2: #0d0f17;
+      --bg3: #12141e;
+      --accent: #9d7ef5;
+      --accent2: #c47ef0;
+      --accent-dim: rgba(157,126,245,0.15);
+      --text: #eaebf2;
+      --text-sub: #8890a8;
+      --border: rgba(255,255,255,0.07);
+      --card: rgba(255,255,255,0.04);
+      --nav-bg: rgba(8,10,15,0.88);
+      --shadow: rgba(0,0,0,0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --bg2: #f7f8fc;
+      --bg3: #eef0f8;
+      --accent-dim: rgba(157,126,245,0.12);
+      --text: #111827;
+      --text-sub: #6b7280;
+      --border: rgba(0,0,0,0.08);
+      --card: rgba(0,0,0,0.03);
+      --nav-bg: rgba(255,255,255,0.92);
+      --shadow: rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+    .nav-logo { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; color: var(--text); }
+    .nav-badge {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+      padding: 3px 8px; border-radius: 100px;
+      background: var(--accent-dim); color: var(--accent);
+      margin-left: 10px; vertical-align: middle;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-sub); font-size: 13px; letter-spacing: 0.04em; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-company { font-size: 12px; color: var(--text-sub); letter-spacing: 0.03em; }
+    .theme-toggle {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--text-sub); border-radius: 8px;
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; transition: all .2s; flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    body, section, .strength-card, .exp-card, .proj-card, .client-chip,
+    .domain-pill, .contact-card, .stat-card {
+      transition: background .3s, color .3s, border-color .3s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 140px 60px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 700px 550px at 65% 35%, rgba(157,126,245,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 15% 75%, rgba(196,126,240,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 60px; width: 100%;
+    }
+    .hero-content { flex: 1; min-width: 0; }
+    .hero-portrait {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .portrait-ring {
+      width: 280px; height: 280px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(157,126,245,0.25), rgba(196,126,240,0.15));
+      border: 1px solid rgba(157,126,245,0.3);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      box-shadow: 0 0 60px rgba(157,126,245,0.12), inset 0 0 40px rgba(157,126,245,0.05);
+    }
+    .portrait-ring::before {
+      content: '';
+      position: absolute; inset: -8px; border-radius: 50%;
+      border: 1px solid rgba(157,126,245,0.12);
+    }
+    .portrait-ring::after {
+      content: '';
+      position: absolute; inset: -18px; border-radius: 50%;
+      border: 1px dashed rgba(157,126,245,0.08);
+    }
+    .portrait-img {
+      width: 220px; height: 220px; border-radius: 50%;
+      object-fit: cover; object-position: top center;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+    .hero-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-label::before {
+      content: ''; width: 32px; height: 1px; background: var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(48px, 7vw, 96px);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.03em; max-width: 900px;
+    }
+    .hero h1 .name-en { display: block; color: var(--text); }
+    .hero h1 .name-kr {
+      display: block;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-role {
+      margin-top: 20px; display: flex; align-items: center; gap: 12px;
+    }
+    .hero-role-title {
+      font-size: 20px; font-weight: 300; color: var(--text-sub); letter-spacing: 0.02em;
+    }
+    .hero-role-sep { color: var(--border); font-size: 20px; }
+    .hero-role-company { font-size: 20px; font-weight: 400; color: var(--text-sub); }
+    .hero-desc {
+      margin-top: 32px;
+      font-size: 17px; color: var(--text-sub); line-height: 1.8;
+      max-width: 580px;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 500; }
+    .hero-cta {
+      margin-top: 52px; display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; text-decoration: none;
+      letter-spacing: 0.04em; transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(157,126,245,0.28);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 32px rgba(157,126,245,0.38); }
+    .btn-ghost {
+      border: 1px solid var(--border); color: var(--text-sub); background: var(--card);
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+    .scroll-hint {
+      position: absolute; bottom: 40px; left: 60px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: 0.14em;
+      color: var(--text-sub); text-transform: uppercase;
+    }
+    .scroll-hint::before {
+      content: ''; width: 36px; height: 1px; background: currentColor;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 60px; }
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 44px); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 14px;
+    }
+    .section-desc {
+      font-size: 16px; color: var(--text-sub); line-height: 1.75;
+      max-width: 580px; margin-bottom: 56px;
+    }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 0 60px; }
+
+    /* ── STRENGTH ── */
+    .strength { background: var(--bg2); }
+    .strength-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; max-width: 960px;
+    }
+    .strength-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 36px 32px;
+      transition: border-color .25s, transform .25s;
+      position: relative; overflow: hidden;
+    }
+    .strength-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0; transition: opacity .25s;
+    }
+    .strength-card:hover { border-color: rgba(157,126,245,0.3); transform: translateY(-4px); }
+    .strength-card:hover::before { opacity: 1; }
+    .strength-num {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--accent); margin-bottom: 16px;
+    }
+    .strength-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
+    .strength-card p { font-size: 14px; color: var(--text-sub); line-height: 1.75; }
+
+    /* ── EXPERTISE ── */
+    .expertise { background: var(--bg); }
+    .expertise-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .exp-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 22px;
+      transition: all .25s;
+    }
+    .exp-card:hover { border-color: rgba(157,126,245,0.35); transform: translateY(-3px); }
+    .exp-icon { font-size: 26px; margin-bottom: 14px; }
+    .exp-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .exp-card p { font-size: 13px; color: var(--text-sub); line-height: 1.7; }
+    .exp-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+    .tag {
+      font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 100px;
+      background: var(--accent-dim); color: var(--accent); letter-spacing: 0.03em;
+    }
+
+    /* ── CAREER ── */
+    .career { background: var(--bg3); }
+    .career-domains {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 60px;
+    }
+    .domain-pill {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px 18px;
+      text-align: center; transition: all .2s;
+    }
+    .domain-pill:hover { border-color: rgba(157,126,245,0.3); }
+    .domain-pill .d-icon { font-size: 22px; margin-bottom: 10px; }
+    .domain-pill .d-name { font-size: 14px; font-weight: 500; }
+
+    /* ── PROJECTS ── */
+    .projects { background: var(--bg2); }
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .proj-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px 24px;
+      transition: all .25s;
+    }
+    .proj-card:hover { border-color: rgba(157,126,245,0.3); transform: translateY(-4px); }
+    .proj-badge {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 100px; margin-bottom: 14px; letter-spacing: 0.05em;
+    }
+    .badge-finance { background: rgba(79,142,247,0.12); color: #7fb3fa; }
+    .badge-commerce { background: rgba(157,126,245,0.12); color: #b89cf7; }
+    .badge-mobility { background: rgba(251,191,36,0.12); color: #fcd169; }
+    .badge-process { background: rgba(52,211,153,0.12); color: #5edeb5; }
+    .proj-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+    .proj-client { font-size: 12px; color: var(--accent); font-weight: 500; margin-bottom: 10px; }
+    .proj-card p { font-size: 13px; color: var(--text-sub); line-height: 1.7; }
+
+    /* ── CLIENTS ── */
+    .clients { background: var(--bg); }
+    .client-group { margin-bottom: 40px; }
+    .client-group-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .client-group-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .client-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .client-chip {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 18px;
+      font-size: 14px; font-weight: 400; color: var(--text-sub);
+      transition: all .2s;
+    }
+    .client-chip:hover { color: var(--text); border-color: rgba(255,255,255,0.18); }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--bg3); }
+    .contact-inner { max-width: 640px; }
+    .contact-card {
+      margin-top: 40px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .contact-row { display: flex; align-items: center; gap: 14px; }
+    .contact-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 9px; background: var(--accent-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .contact-row .label { font-size: 11px; color: var(--text-sub); letter-spacing: 0.08em; margin-bottom: 3px; }
+    .contact-row .value { font-size: 15px; font-weight: 500; }
+    .contact-row a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .contact-row a:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 60px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--text-sub);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1200px) {
+      .portrait-ring { width: 240px; height: 240px; }
+      .portrait-img { width: 188px; height: 188px; }
+    }
+    @media (max-width: 1100px) {
+      .expertise-row { grid-template-columns: 1fr 1fr; }
+      .career-domains { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 18px 28px; }
+      .hero, section { padding-left: 28px; padding-right: 28px; }
+      hr.divider { margin: 0 28px; }
+      footer { padding: 24px 28px; }
+      .strength-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 120px; align-items: flex-start; }
+      .hero-inner { flex-direction: column-reverse; align-items: flex-start; gap: 40px; }
+      .hero-portrait { align-self: center; }
+      .portrait-ring { width: 200px; height: 200px; }
+      .portrait-img { width: 158px; height: 158px; }
+      .scroll-hint { left: 28px; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero, section { padding-left: 20px; padding-right: 20px; }
+      hr.divider { margin: 0 20px; }
+      footer { padding: 20px; flex-direction: column; gap: 6px; }
+      .hero h1 { font-size: 40px; }
+      .hero-role { flex-wrap: wrap; }
+      .expertise-row, .career-domains, .projects-grid { grid-template-columns: 1fr; }
+      .scroll-hint { display: none; }
+      .portrait-ring { width: 180px; height: 180px; }
+      .portrait-img { width: 140px; height: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    PARK HWA-SUN
+    <span class="nav-badge">LEADER</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#strength">핵심 역량</a></li>
+    <li><a href="#expertise">전문 분야</a></li>
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#clients">클라이언트</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span class="nav-company">㈜팀에버플</span>
+    <button class="theme-toggle" id="themeToggle" title="다크/라이트 모드 전환">🌙</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-label">Product Leader · UX Strategist</div>
+      <h1>
+        <span class="name-en">Park Hwa-Sun</span>
+        <span class="name-kr">박 화 선</span>
+      </h1>
+      <div class="hero-role">
+        <span class="hero-role-title">리더</span>
+        <span class="hero-role-sep">|</span>
+        <span class="hero-role-company">㈜팀에버플</span>
+      </div>
+      <p class="hero-desc">
+        <strong>Back &amp; Frontend 서비스 정책·설계·가이드·런칭·운영</strong> 전 과정을
+        아우르는 경험으로, 금융·이커머스 플랫폼 프로덕트 구현의 전체 과정을 리드합니다.
+        전방위 서비스·플랫폼 전략과 설계, 디자인 디테일까지 갖춘 풀스택 프로덕트 리더.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+        <a href="#contact" class="btn btn-ghost">연락하기</a>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-ring">
+        <img class="portrait-img" src="images/hwasun_caricature.png" alt="박화선 리더" />
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<hr class="divider" />
+
+<!-- STRENGTH -->
+<section class="strength" id="strength">
+  <div class="section-label">Core Strength</div>
+  <h2 class="section-title">3가지 핵심 역량</h2>
+  <p class="section-desc">
+    실행과 전략을 함께 사고하는 리더로서, 서비스의 시작부터 끝까지 품질을 책임집니다.
+  </p>
+  <div class="strength-grid">
+    <div class="strength-card">
+      <div class="strength-num">01</div>
+      <h3>Back &amp; Frontend 全 영역 경험</h3>
+      <p>
+        서비스 정책 수립부터 설계·가이드·런칭·운영까지, 웹에이전시에서 찾아보기 어려운
+        Back-end·Back-Office·Front 설계와 Quality Coordination을 아우르는 Full Stack PO 역량을 보유합니다.
+      </p>
+    </div>
+    <div class="strength-card">
+      <div class="strength-num">02</div>
+      <h3>금융 · 이커머스 플랫폼 프로덕트 리드</h3>
+      <p>
+        최고 수준의 금융·이커머스 플랫폼에 대한 깊이 있는 이해를 바탕으로, 프로덕트 구현의 전체 과정을
+        기획·설계·협업·검수에 이르기까지 직접 리드합니다.
+      </p>
+    </div>
+    <div class="strength-card">
+      <div class="strength-num">03</div>
+      <h3>전방위 전략 · 설계 · 디자인 디테일</h3>
+      <p>
+        서비스·플랫폼 전략 수립부터 UX/UI 설계·디자인 디테일까지 일관된 품질로 연결합니다.
+        사용자가 경험하는 모든 흐름에서 기능적 필요와 감성적 욕구를 동시에 해결합니다.
+      </p>
+    </div>
+    <div class="strength-card">
+      <div class="strength-num">+</div>
+      <h3>설계와 구현 사이의 품질 보장</h3>
+      <p>
+        완성된 설계와 디자인이 실제 사용자에게 그대로 전달되도록, QA/QC 역량을 갖춘
+        기획·디자인 인력과 함께 개발파트와 협업하며 높은 품질의 프로젝트 마무리를 이끕니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- EXPERTISE -->
+<section class="expertise" id="expertise">
+  <div class="section-label">Expertise</div>
+  <h2 class="section-title">전문 분야</h2>
+  <p class="section-desc">
+    Finance·e-Commerce·Mobility·Process Innovation 4개 도메인에 걸쳐 실무 중심의 경험을 쌓아왔습니다.
+  </p>
+  <div class="expertise-row">
+    <div class="exp-card">
+      <div class="exp-icon">💳</div>
+      <h3>Finance</h3>
+      <p>디지털 금융 서비스의 UX 전략·설계 및 고도화. 신한카드·기업은행·케이뱅크 등 국내 최상위 금융기관과 협업.</p>
+      <div class="exp-tags">
+        <span class="tag">결제 UX</span>
+        <span class="tag">뱅킹 앱</span>
+        <span class="tag">FO/BO</span>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">🛍️</div>
+      <h3>e-Commerce</h3>
+      <p>대형 커머스 플랫폼 FO/BO 설계·리뉴얼·고도화. 브랜드 경험과 운영 효율을 동시에 높이는 설계 주도.</p>
+      <div class="exp-tags">
+        <span class="tag">플랫폼 설계</span>
+        <span class="tag">Back-office</span>
+        <span class="tag">전시 UX</span>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">🚗</div>
+      <h3>Mobility</h3>
+      <p>모빌리티 서비스 플랫폼 전략 및 회원 정책 수립. 사용자 여정 분석에 기반한 UX 개선 방향 도출.</p>
+      <div class="exp-tags">
+        <span class="tag">서비스 전략</span>
+        <span class="tag">회원 정책</span>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">⚙️</div>
+      <h3>Process Innovation</h3>
+      <p>협업·QA 프로세스 수립 및 전파·내재화. 다수 기업의 설계~운영 전 과정의 품질 체계를 구축하고 정착시킴.</p>
+      <div class="exp-tags">
+        <span class="tag">협업 체계</span>
+        <span class="tag">QA 방법론</span>
+        <span class="tag">가이드 구축</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">주요 프로젝트</h2>
+  <p class="section-desc">
+    금융·커머스·모빌리티 영역에서 서비스 설계부터 운영까지 직접 리드한 대표 프로젝트입니다.
+  </p>
+  <div class="projects-grid">
+    <div class="proj-card">
+      <span class="proj-badge badge-finance">Finance</span>
+      <h3>신한pLay 전체 리뉴얼</h3>
+      <div class="proj-client">신한카드</div>
+      <p>All-in-One 디지털 월렛 전면 리뉴얼. 빠른 결제·오픈뱅킹·멤버십·AI 자산관리를 아우르는 종합금융 플랫폼으로 전환. Back &amp; Frontend 정책·설계 전 과정 참여.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-finance">Finance</span>
+      <h3>신한카드 디스커버 Pivoting 전략</h3>
+      <div class="proj-client">신한카드</div>
+      <p>기존 서비스 구조 분석 및 피보팅 전략 수립. 사용자 경험 중심의 서비스 재설계 방향성 도출 및 신규 기능·UI 정책 수립.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-finance">Finance</span>
+      <h3>기업은행 스마트금융 상시 운영</h3>
+      <div class="proj-client">IBK 기업은행</div>
+      <p>디지털 채널 전반의 상시 운영 체계 구축 및 유지. 인터랙션·모션 디자인 기반의 브랜드 경험 강화. PC~모바일 전 채널 일관된 품질 유지.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-commerce">e-Commerce</span>
+      <h3>한섬닷컴 파트너 오피스 고도화</h3>
+      <div class="proj-client">더한섬닷컴</div>
+      <p>커머스 운영 전방위 담당. 쿠폰·정산 등 복잡 비즈니스 로직 기획, 위치·날씨 기반 개인화 전시 경험 구현. 브랜드 가치의 온라인 완벽 구현 전략 파트너.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-commerce">e-Commerce</span>
+      <h3>29CM FO/BO 리뉴얼 · 고도화</h3>
+      <div class="proj-client">29CM</div>
+      <p>차세대 리드 편집숍 UX 기준점 제시. 주문·결제·CS·쿠폰 백오피스 신규 기획. 리뉴얼 이후 고객 반응률 분석에 따른 지속 고도화 수행.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-commerce">e-Commerce</span>
+      <h3>롯데백화점 뉴플랫폼 구축</h3>
+      <div class="proj-client">롯데백화점</div>
+      <p>뉴플랫폼 구축 핵심과제 서비스 기획. 대형 유통 플랫폼의 사용자 경험 혁신을 위한 서비스 구조 재설계 및 핵심 UX 전략 수립.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-finance">Finance</span>
+      <h3>케이뱅크 여신 서비스 고도화</h3>
+      <div class="proj-client">케이뱅크</div>
+      <p>여신(대출) 서비스 UX 전반 고도화. 복잡한 금융 프로세스를 사용자 관점에서 단순화하고 전환율을 높이는 설계 방향 수립 및 구현.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-mobility">Mobility</span>
+      <h3>파킹클라우드 회원정책 수립</h3>
+      <div class="proj-client">파킹클라우드</div>
+      <p>전 플랫폼 회원 정책 전면 수립. 서비스 이용 흐름 전반에 걸친 회원 가입·관리·탈퇴 정책 체계화 및 UX 정합성 확보.</p>
+    </div>
+    <div class="proj-card">
+      <span class="proj-badge badge-process">Process Innovation</span>
+      <h3>29CM 협업 · QA 프로세스 수립</h3>
+      <div class="proj-client">29CM</div>
+      <p>협업 프로세스 정의·전파·실행. 설계~구현~검수에 이르는 QA 체계 수립으로 일관된 품질 보장. 전담 운영 체계와 내재화 가이드 제공.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CLIENTS -->
+<section class="clients" id="clients">
+  <div class="section-label">Clients</div>
+  <h2 class="section-title">함께한 클라이언트</h2>
+  <p class="section-desc">국내 주요 금융·커머스·모빌리티 기업과 함께 디지털 서비스를 만들었습니다.</p>
+
+  <div class="client-group">
+    <div class="client-group-label">Finance</div>
+    <div class="client-chips">
+      <div class="client-chip">신한카드</div>
+      <div class="client-chip">IBK 기업은행</div>
+      <div class="client-chip">KB국민은행</div>
+      <div class="client-chip">우리은행</div>
+      <div class="client-chip">케이뱅크</div>
+      <div class="client-chip">롯데카드</div>
+    </div>
+  </div>
+
+  <div class="client-group">
+    <div class="client-group-label">e-Commerce &amp; Retail</div>
+    <div class="client-chips">
+      <div class="client-chip">롯데백화점</div>
+      <div class="client-chip">롯데닷컴</div>
+      <div class="client-chip">롯데하이마트</div>
+      <div class="client-chip">29CM</div>
+      <div class="client-chip">한샘몰</div>
+      <div class="client-chip">신세계인터내셔날</div>
+      <div class="client-chip">eBay</div>
+      <div class="client-chip">W CONCEPT</div>
+      <div class="client-chip">아이디룩</div>
+    </div>
+  </div>
+
+  <div class="client-group">
+    <div class="client-group-label">Mobility &amp; Others</div>
+    <div class="client-chips">
+      <div class="client-chip">SK렌터카</div>
+      <div class="client-chip">파킹클라우드</div>
+      <div class="client-chip">LG전자</div>
+      <div class="client-chip">현대이지웰</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">Contact</div>
+  <div class="contact-inner">
+    <h2 class="section-title">함께 만들어갑시다</h2>
+    <p class="section-desc" style="margin-bottom:0">
+      새로운 디지털 서비스의 전략·설계·구현을 함께할 파트너를 찾고 계신다면
+      아래로 연락 주세요.
+    </p>
+    <div class="contact-card">
+      <div class="contact-row">
+        <div class="contact-icon">✉</div>
+        <div>
+          <div class="label">EMAIL</div>
+          <div class="value"><a href="mailto:rainy@teamevople.kr">rainy@teamevople.kr</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🏢</div>
+        <div>
+          <div class="label">COMPANY</div>
+          <div class="value">㈜팀에버플 · Team Evople Corp.</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">👤</div>
+        <div>
+          <div class="label">ROLE</div>
+          <div class="value">리더 · Product Leader</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Park Hwa-Sun. All rights reserved.</span>
+  <span>㈜팀에버플 · Team Evople</span>
+</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('theme-hwasun');
+  if (saved === 'light') { document.documentElement.setAttribute('data-theme', 'light'); toggle.textContent = '☀️'; }
+
+  toggle.addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      document.documentElement.removeAttribute('data-theme');
+      toggle.textContent = '🌙';
+      localStorage.setItem('theme-hwasun', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      toggle.textContent = '☀️';
+      localStorage.setItem('theme-hwasun', 'light');
+    }
+  });
+</script>
+</body>
+</html>
