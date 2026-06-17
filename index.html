@@ -72,7 +72,7 @@
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
+      display: flex; align-items: center;
       padding: 140px 60px 80px;
       position: relative;
       overflow: hidden;
@@ -293,6 +293,160 @@
       content: ''; width: 40px; height: 1px; background: var(--text-sub);
     }
 
+    /* ── HERO INTERACTIVE LOGO CARD ── */
+    .hero-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+    
+    .logo-card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      height: 280px;
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform-style: preserve-3d;
+      will-change: transform;
+      box-shadow: 0 20px 50px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    
+    .logo-card:hover {
+      border-color: rgba(79, 142, 247, 0.35);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 142, 247, 0.1);
+    }
+    
+    .logo-card-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(79, 142, 247, 0.15) 0%, rgba(124, 110, 247, 0.08) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) translateZ(-10px);
+      filter: blur(25px);
+      transition: left 0.15s ease-out, top 0.15s ease-out;
+      z-index: 1;
+    }
+    
+    .logo-card-glare {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+      border-radius: 20px;
+      z-index: 4;
+    }
+    
+    .logo-card-inner {
+      position: absolute;
+      inset: 20px;
+      border: 1px dashed rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+    [data-theme="light"] .logo-card-inner {
+      border-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .logo-brand-bg {
+      font-size: 56px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      opacity: 0.02;
+      color: var(--text);
+      user-select: none;
+      transform: translateZ(10px);
+    }
+    [data-theme="light"] .logo-brand-bg {
+      opacity: 0.03;
+    }
+    
+    .logo-signature-wrap {
+      position: absolute;
+      width: 75%;
+      height: auto;
+      transform: translateZ(40px);
+      transition: transform 0.15s ease-out;
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .logo-sig {
+      width: 100%;
+      height: auto;
+      max-height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+      transition: filter 0.3s;
+    }
+    [data-theme="light"] .logo-sig {
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+    
+    .logo-sig-light { display: block; }
+    .logo-sig-dark { display: none; }
+    
+    [data-theme="light"] .logo-sig-light { display: none; }
+    [data-theme="light"] .logo-sig-dark { display: block; }
+    
+    .logo-hud {
+      position: absolute;
+      inset: 0;
+      padding: 15px 18px;
+      pointer-events: none;
+      z-index: 5;
+      font-family: monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text-sub);
+      opacity: 0.4;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .hud-val {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 20px 28px; }
@@ -302,6 +456,15 @@
       footer { padding: 28px; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
       .hero { padding-top: 120px; }
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        text-align: center;
+      }
+      .hero-desc { margin: 32px auto 0; }
+      .hero-tagline { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 16px; margin: 32px auto 0; max-width: 400px; }
+      .hero-cta { justify-content: center; }
+      .hero-visual { margin-top: 20px; }
     }
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
@@ -312,7 +475,66 @@
       .hero h1 { font-size: 40px; }
       .hero-desc { font-size: 16px; }
       .about-stats { grid-template-columns: 1fr 1fr; }
-      .scroll-line { left: 20px; }
+      .scroll-line { display: none; }
+      .logo-card { height: 220px; }
+      .logo-sig { max-height: 100px; }
+    }
+
+    /* ── GUESTBOOK ── */
+    .guestbook { padding: 80px 5%; }
+    .guestbook .section-inner { max-width: 760px; margin: 0 auto; }
+    .gb-form { display: flex; flex-direction: column; gap: 12px; margin: 32px 0 40px; }
+    .gb-form input,
+    .gb-form textarea {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Paperlogy', sans-serif;
+      font-size: 15px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    .gb-form input:focus,
+    .gb-form textarea:focus { border-color: var(--accent); }
+    .gb-form textarea { min-height: 100px; resize: vertical; }
+    .gb-form textarea::-webkit-scrollbar { width: 6px; }
+    .gb-form textarea::-webkit-scrollbar-track { background: var(--bg2); border-radius: 3px; }
+    .gb-form textarea::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; opacity: .7; }
+    .gb-form textarea::-webkit-scrollbar-thumb:hover { opacity: 1; }
+    .gb-submit {
+      align-self: flex-end;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Paperlogy', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 28px;
+      transition: opacity .2s, transform .1s;
+    }
+    .gb-submit:hover { opacity: .85; }
+    .gb-submit:active { transform: scale(.97); }
+    .gb-submit:disabled { opacity: .5; cursor: not-allowed; }
+    .gb-list { display: flex; flex-direction: column; gap: 14px; }
+    .gb-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .gb-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .gb-name { font-weight: 700; font-size: 15px; }
+    .gb-date { color: var(--text-sub); font-size: 13px; }
+    .gb-msg { color: var(--text-sub); font-size: 15px; line-height: 1.6; white-space: pre-wrap; }
+    .gb-empty { color: var(--text-sub); font-size: 15px; text-align: center; padding: 40px 0; }
+    @media (max-width: 600px) {
+      .guestbook { padding: 60px 20px; }
+      .gb-submit { align-self: stretch; }
     }
   </style>
 </head>
@@ -333,21 +555,48 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-label">CEO & Product Strategist</div>
-  <h1>
-    <span class="name-en">Park Han-Jun</span>
-    <span class="name-kr">박 한 준</span>
-  </h1>
-  <p class="hero-desc">
-    ㈜팀에버플 대표이사. 금융·커머스·AI 융합 서비스의 전략 수립부터
-    설계·구현·운영까지 풀스택 프로덕트 경험을 보유한 디지털 서비스 전문가.
-  </p>
-  <p class="hero-tagline">
-    "Evolving Experiences, Empowering Outcomes."
-  </p>
-  <div class="hero-cta">
-    <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
-    <a href="#contact" class="btn btn-ghost">연락하기</a>
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-label">CEO & Product Strategist</div>
+      <h1>
+        <span class="name-en">Park Han-Jun</span>
+        <span class="name-kr">박 한 준</span>
+      </h1>
+      <p class="hero-desc">
+        ㈜팀에버플 대표이사. 금융·커머스·AI 융합 서비스의 전략 수립부터
+        설계·구현·운영까지 풀스택 프로덕트 경험을 보유한 디지털 서비스 전문가.
+      </p>
+      <p class="hero-tagline">
+        "Evolving Experiences, Empowering Outcomes."
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+        <a href="#contact" class="btn btn-ghost">연락하기</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="logo-card" id="logoCard">
+        <div class="logo-card-glow" id="logoGlow"></div>
+        <div class="logo-card-glare" id="logoGlare"></div>
+        <div class="logo-card-inner">
+          <div class="logo-brand-bg">rainysoul</div>
+          <div class="logo-signature-wrap">
+            <img src="images/rainysoul_logo_light.png" alt="rainysoul signature" class="logo-sig logo-sig-light" />
+            <img src="images/rainysoul_logo_dark.png" alt="rainysoul signature" class="logo-sig logo-sig-dark" />
+          </div>
+        </div>
+        <div class="logo-hud">
+          <div class="hud-row">
+            <span>SYS.INIT // ACTIVE</span>
+            <span>REF: 0x7E2F</span>
+          </div>
+          <div class="hud-row">
+            <span>COORD: <span class="hud-val" id="hudCoords">[0, 0]</span></span>
+            <span>RAINYSOUL V1.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="scroll-line">SCROLL</div>
 </section>
@@ -596,12 +845,78 @@
   </div>
 </section>
 
+<!-- GUESTBOOK -->
+<hr class="divider" />
+<section class="guestbook" id="guestbook">
+  <div class="section-inner">
+    <div class="section-label">Guestbook</div>
+    <h2 class="section-title">방명록</h2>
+    <p class="section-desc">방문해 주셔서 감사합니다. 한 마디 남겨주세요 :)</p>
+    <form id="gbForm" class="gb-form">
+      <input type="text" id="gbName" placeholder="이름" maxlength="30" required />
+      <textarea id="gbContent" placeholder="메시지를 남겨주세요 (최대 300자)..." maxlength="300" required></textarea>
+      <button type="submit" class="gb-submit">남기기</button>
+    </form>
+    <div id="gbList" class="gb-list">
+      <p class="gb-empty">메시지를 불러오는 중...</p>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <span>© 2025 Park Han-Jun. All rights reserved.</span>
   <span>㈜팀에버플 대표이사</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  // ── Supabase Guestbook ──
+  // anon key는 공개 키입니다. 실제 보안은 Supabase RLS 정책으로 처리됩니다.
+  const GB_URL  = 'https://xtkxcvthlnuktaexyzfw.supabase.co';
+  const GB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0a3hjdnRobG51a3RhZXh5emZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MjgyMTUsImV4cCI6MjA5NzIwNDIxNX0.z3MUAce2r1Tn0J5f_eBtuNlBesUCKYQNFFK5emjtrcA';
+  const sb = supabase.createClient(GB_URL, GB_KEY);
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+  }
+
+  async function gbLoad() {
+    const list = document.getElementById('gbList');
+    const { data, error } = await sb.from('messages').select('*').eq('portfolio', 'hanjun').order('created_at', { ascending: false }).limit(30);
+    if (error) { list.innerHTML = '<p class="gb-empty">메시지를 불러오지 못했습니다.</p>'; return; }
+    if (!data.length) { list.innerHTML = '<p class="gb-empty">아직 메시지가 없어요. 첫 번째 글을 남겨보세요!</p>'; return; }
+    list.innerHTML = data.map(m => `
+      <div class="gb-item">
+        <div class="gb-meta">
+          <span class="gb-name">${escHtml(m.name)}</span>
+          <span class="gb-date">${fmtDate(m.created_at)}</span>
+        </div>
+        <p class="gb-msg">${escHtml(m.content)}</p>
+      </div>`).join('');
+  }
+
+  document.getElementById('gbForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('gbName').value.trim();
+    const content = document.getElementById('gbContent').value.trim();
+    const btn = e.target.querySelector('.gb-submit');
+    btn.disabled = true; btn.textContent = '저장 중...';
+    const { error } = await sb.from('messages').insert([{ name, content, portfolio: 'hanjun' }]);
+    if (error) {
+      alert('저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    } else {
+      e.target.reset();
+      await gbLoad();
+    }
+    btn.disabled = false; btn.textContent = '남기기';
+  });
+
+  gbLoad();
+</script>
 <script>
   const toggle = document.getElementById('themeToggle');
   const saved = localStorage.getItem('theme-hanjun');
@@ -619,6 +934,79 @@
       localStorage.setItem('theme-hanjun', 'light');
     }
   });
+
+  // ── 3D Logo Card Interaction ──
+  const card = document.getElementById('logoCard');
+  const glow = document.getElementById('logoGlow');
+  const glare = document.getElementById('logoGlare');
+  const coords = document.getElementById('hudCoords');
+
+  if (card && glow && glare && coords) {
+    const handleMove = (clientX, clientY) => {
+      const rect = card.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      
+      const dx = x - xc;
+      const dy = y - yc;
+      
+      // Dynamic tilt calculations (limit rotation to 15deg)
+      const tiltX = -(dy / yc) * 15;
+      const tiltY = (dx / xc) * 15;
+      
+      // Update 3D card tilt
+      card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      
+      // Glow light tracking position
+      const glowX = (x / rect.width) * 100;
+      const glowY = (y / rect.height) * 100;
+      glow.style.left = `${glowX}%`;
+      glow.style.top = `${glowY}%`;
+      glow.style.transform = `translate(-50%, -50%) translateZ(-10px)`;
+      
+      // Glare reflection sweep angle & opacity
+      const glareAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+      const glareOpacity = Math.min(Math.sqrt(dx*dx + dy*dy) / Math.sqrt(xc*xc + yc*yc) * 0.4, 0.4);
+      glare.style.background = `linear-gradient(${glareAngle - 90}deg, rgba(255,255,255,${glareOpacity}) 0%, rgba(255,255,255,0) 80%)`;
+      
+      // Update HUD coordinates text
+      coords.textContent = `[${Math.round(x)}, ${Math.round(y)}]`;
+    };
+
+    const handleLeave = () => {
+      // Smooth reset back to center
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      glare.style.background = `linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0) 100%)`;
+      glow.style.left = '50%';
+      glow.style.top = '50%';
+      coords.textContent = `[0, 0]`;
+    };
+
+    // Mouse Listeners
+    card.addEventListener('mousemove', (e) => {
+      handleMove(e.clientX, e.clientY);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      handleLeave();
+    });
+
+    // Touch Listeners (for mobile experience)
+    card.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        // Prevent background scrolling while interacting with the 3D card
+        e.preventDefault();
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    card.addEventListener('touchend', () => {
+      handleLeave();
+    });
+  }
 </script>
 </body>
 </html>

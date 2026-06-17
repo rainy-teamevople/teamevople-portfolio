@@ -381,6 +381,63 @@
       .portrait-ring { width: 180px; height: 180px; }
       .portrait-img { width: 140px; height: 140px; }
     }
+
+    /* ── GUESTBOOK ── */
+    .guestbook { padding: 80px 5%; }
+    .guestbook .section-inner { max-width: 760px; margin: 0 auto; }
+    .gb-form { display: flex; flex-direction: column; gap: 12px; margin: 32px 0 40px; }
+    .gb-form input,
+    .gb-form textarea {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Paperlogy', sans-serif;
+      font-size: 15px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    .gb-form input:focus,
+    .gb-form textarea:focus { border-color: var(--accent); }
+    .gb-form textarea { min-height: 100px; resize: vertical; }
+    .gb-form textarea::-webkit-scrollbar { width: 6px; }
+    .gb-form textarea::-webkit-scrollbar-track { background: var(--bg2); border-radius: 3px; }
+    .gb-form textarea::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; opacity: .7; }
+    .gb-form textarea::-webkit-scrollbar-thumb:hover { opacity: 1; }
+    .gb-submit {
+      align-self: flex-end;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Paperlogy', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 28px;
+      transition: opacity .2s, transform .1s;
+    }
+    .gb-submit:hover { opacity: .85; }
+    .gb-submit:active { transform: scale(.97); }
+    .gb-submit:disabled { opacity: .5; cursor: not-allowed; }
+    .gb-list { display: flex; flex-direction: column; gap: 14px; }
+    .gb-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .gb-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .gb-name { font-weight: 700; font-size: 15px; }
+    .gb-date { color: var(--text-sub); font-size: 13px; }
+    .gb-msg { color: var(--text-sub); font-size: 15px; line-height: 1.6; white-space: pre-wrap; }
+    .gb-empty { color: var(--text-sub); font-size: 15px; text-align: center; padding: 40px 0; }
+    @media (max-width: 600px) {
+      .guestbook { padding: 60px 20px; }
+      .gb-submit { align-self: stretch; }
+    }
   </style>
 </head>
 <body>
@@ -684,12 +741,77 @@
   </div>
 </section>
 
+<!-- GUESTBOOK -->
+<hr class="divider" />
+<section class="guestbook" id="guestbook">
+  <div class="section-inner">
+    <div class="section-label">Guestbook</div>
+    <h2 class="section-title">방명록</h2>
+    <p class="section-desc">방문해 주셔서 감사합니다. 한 마디 남겨주세요 :)</p>
+    <form id="gbForm" class="gb-form">
+      <input type="text" id="gbName" placeholder="이름" maxlength="30" required />
+      <textarea id="gbContent" placeholder="메시지를 남겨주세요 (최대 300자)..." maxlength="300" required></textarea>
+      <button type="submit" class="gb-submit">남기기</button>
+    </form>
+    <div id="gbList" class="gb-list">
+      <p class="gb-empty">메시지를 불러오는 중...</p>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <span>© 2025 Park Hwa-Sun. All rights reserved.</span>
   <span>㈜팀에버플 · Team Evople</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  // ── Supabase Guestbook ──
+  const GB_URL  = 'https://xtkxcvthlnuktaexyzfw.supabase.co';
+  const GB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0a3hjdnRobG51a3RhZXh5emZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MjgyMTUsImV4cCI6MjA5NzIwNDIxNX0.z3MUAce2r1Tn0J5f_eBtuNlBesUCKYQNFFK5emjtrcA';
+  const sb = supabase.createClient(GB_URL, GB_KEY);
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+  }
+
+  async function gbLoad() {
+    const list = document.getElementById('gbList');
+    const { data, error } = await sb.from('messages').select('*').eq('portfolio', 'hwasun').order('created_at', { ascending: false }).limit(30);
+    if (error) { list.innerHTML = '<p class="gb-empty">메시지를 불러오지 못했습니다.</p>'; return; }
+    if (!data.length) { list.innerHTML = '<p class="gb-empty">아직 메시지가 없어요. 첫 번째 글을 남겨보세요!</p>'; return; }
+    list.innerHTML = data.map(m => `
+      <div class="gb-item">
+        <div class="gb-meta">
+          <span class="gb-name">${escHtml(m.name)}</span>
+          <span class="gb-date">${fmtDate(m.created_at)}</span>
+        </div>
+        <p class="gb-msg">${escHtml(m.content)}</p>
+      </div>`).join('');
+  }
+
+  document.getElementById('gbForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('gbName').value.trim();
+    const content = document.getElementById('gbContent').value.trim();
+    const btn = e.target.querySelector('.gb-submit');
+    btn.disabled = true; btn.textContent = '저장 중...';
+    const { error } = await sb.from('messages').insert([{ name, content, portfolio: 'hwasun' }]);
+    if (error) {
+      alert('저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    } else {
+      e.target.reset();
+      await gbLoad();
+    }
+    btn.disabled = false; btn.textContent = '남기기';
+  });
+
+  gbLoad();
+</script>
 <script>
   const toggle = document.getElementById('themeToggle');
   const saved = localStorage.getItem('theme-hwasun');
