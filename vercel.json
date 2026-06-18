@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/hwasun", "destination": "/hwasun.html" }
+    { "source": "/hwasun", "destination": "/hwasun.html" },
+    { "source": "/todo/(.*)", "destination": "/todo/index.html" }
   ]
 }
