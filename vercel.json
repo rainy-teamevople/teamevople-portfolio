@@ -3,6 +3,7 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/hwasun", "destination": "/hwasun.html" },
+    { "source": "/todo", "destination": "/todo/index.html" },
     { "source": "/todo/(.*)", "destination": "/todo/index.html" }
   ]
 }
